@@ -14,10 +14,15 @@ class App extends React.Component {
       isRunOnClick: true,
     }
   }
-  componentDidMount(){
+  componentDidMount() {
     console.log('componentDidMount');
+    const { currentValue } = this.state;
+    if (currentValue !== '') {
+      this.setState({ isRunOnClick: false });
+    }
+
   }
-  componentDidUpdate(prevProps,prevState,snapshot){
+  componentDidUpdate(prevProps, prevState, snapshot) {
     /*const{currentValue}=this.state;
     //iki eşittir ve 3 eşittir arasında ki fark, == value kontrolü yapar(2=='2' true sonuç odaklı çalışır)
     //=== tür kontrolü ve değer kontrolü yapar(2==='2' false döner)
@@ -26,12 +31,12 @@ class App extends React.Component {
     }else{
       this.setState({isRunOnClick:true});
     }*/
-    console.log('prevPros',prevProps);
-    console.log('prevState',prevState);
-    console.log('snapshot',snapshot);
+    console.log('prevPros', prevProps);
+    console.log('prevState', prevState);
+    console.log('snapshot', snapshot);
 
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     console.log("componentWillUnmount");
   }
   _renderElements = () => {
@@ -49,19 +54,20 @@ class App extends React.Component {
     });
     return test;*/
     //kısa olarak map
-    return values.map(value => <ListElement text={value} />)
+    return values.map((value,index) => <ListElement key={index} text={value} />)
   }
   //burada tanımlı propstan gelmiyor
   _handleOnClick = () => {
-    const { currentValue, values,isRunOnClick } = this.state;
-    if(isRunOnClick===true){
+    const { currentValue, values, isRunOnClick } = this.state;
+    if (isRunOnClick === true) {
       values.push(currentValue);
-     this.setState({}, () => { 
-       console.log(this.state.values) });
+      this.setState({}, () => {
+        console.log(this.state.values)
+      });
 
     }
 
-    
+
   };
   _handleOnChange = event => {
     this.setState({ currentValue: event.target.value }, () => {
@@ -71,19 +77,26 @@ class App extends React.Component {
     console.log('this.state.currentValue 2', this.state.currentValue);
   };
   //this olmazsa hata verir
+
+  //key kullanım amacı: forla ekrana bastırdığımız component için kullanıyoruz. performans kazancı sağlıyor
   render() {
+    const { currentValue } = this.state;
+
     console.log('render');
-    const css={
-      ul:{
-        backgroundColor:'blue',
+    const css = {
+      ul: {
+        backgroundColor: 'blue',
       }
     }
-    
+
     return (
       <div className="App">
         <div>
           <Input handleOnChange={this._handleOnChange} />
-          <Button title="test" handleOnClick={this._handleOnClick} />
+          {currentValue && (
+            <Button isDisable={currentValue === ''} title="test" handleOnClick={this._handleOnClick} />
+
+          )}
         </div>
         <div style={css.ul}>
           <ul>
