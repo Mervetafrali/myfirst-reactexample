@@ -85,7 +85,8 @@ class App extends React.Component {
     console.log('render');
     const css = {
       ul: {
-        backgroundColor: 'blue',
+        backgroundColor: 'black',
+        color:'white',
       }
     }
 
