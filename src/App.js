@@ -2,9 +2,16 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+//dispatch için redux fonk çağırdık
+import { connect } from 'react-redux';
+
 import Button from './compenents/Button';
 import Input from './compenents/Input';
 import ListElement from './compenents/ListElements';
+
+//Action
+import { addTodo } from './redux/actions/todoAction';
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -54,22 +61,23 @@ class App extends React.Component {
     });
     return test;*/
     //kısa olarak map
-    return values.map((value,index) => <ListElement key={index} text={value} />)
+    const{todoList}=this.props;
+    return todoList.map((value, index) => <ListElement key={index} text={value.name} />)
   }
   //burada tanımlı propstan gelmiyor
-  _handleOnClick = () => {
+  _handleOnClick = event => {
+    //propsun içinde kullabdık dispatchi
+    const { dispatch ,todoList} = this.props;
     const { currentValue, values, isRunOnClick } = this.state;
-    if (isRunOnClick === true) {
-      values.push(currentValue);
-      this.setState({}, () => {
-        console.log(this.state.values)
-      });
-
-    }
-
+    //dispatch comp ile reducer arasındaki iletişimi actionlar ile sağlar 
+    console.log('todoList:',todoList);
+    dispatch(addTodo(currentValue));
+    //tüm reducerlara iletilir 
+    
 
   };
   _handleOnChange = event => {
+    
     this.setState({ currentValue: event.target.value }, () => {
       console.log('this.state.currentValue 1', this.state.currentValue);
       //asenkron çalışıyor
@@ -86,7 +94,7 @@ class App extends React.Component {
     const css = {
       ul: {
         backgroundColor: 'black',
-        color:'white',
+        color: 'white',
       }
     }
 
@@ -101,7 +109,7 @@ class App extends React.Component {
         </div>
         <div style={css.ul}>
           <ul>
-            {/* vir dom ile comp olarak bağlı, değiştikçe yazı görüntü de ğişecek */}
+            {/* dir dom ile comp olarak bağlı, değiştikçe yazı görüntüsü değişecek */}
 
             {this._renderElements()}
           </ul>
@@ -111,5 +119,20 @@ class App extends React.Component {
   }
 
 }
+//comp ile reduxı bağlıyor. İki parantez içeriyor. fonk üreten bi fonksiyondur.  ikincisine app comp eklenir
 
-export default App;
+/*const connect = ()=>{
+    return ()=>{
+      return 'merve'
+    };
+}*/
+const mapStateToProps = (state) =>{
+  return {
+    //hangi state i hangi propsaa bağlıyacağız onu söylüyor
+    todoList:state.todos.todos,
+  }
+
+}
+//comp app olduğu için onu yazıyoruz
+export default connect(mapStateToProps)(App);
+//connect yazdığımızda dispatch çaşılıyor,dispatch default olarak gönderiliyor
