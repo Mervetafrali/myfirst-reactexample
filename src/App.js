@@ -61,23 +61,25 @@ class App extends React.Component {
     });
     return test;*/
     //kısa olarak map
-    const{todoList}=this.props;
+    const { todoList } = this.props;
     return todoList.map((value, index) => <ListElement key={index} text={value.name} />)
   }
   //burada tanımlı propstan gelmiyor
   _handleOnClick = event => {
     //propsun içinde kullabdık dispatchi
-    const { dispatch ,todoList} = this.props;
+    const { dispatch, todoList } = this.props;
     const { currentValue, values, isRunOnClick } = this.state;
     //dispatch comp ile reducer arasındaki iletişimi actionlar ile sağlar 
-    console.log('todoList:',todoList);
+    console.log('todoList:', todoList);
     dispatch(addTodo(currentValue));
     //tüm reducerlara iletilir 
-    
+
 
   };
+  //reducer a ne yapacağını söykemek action'dır 
+  //actionu somut olarak göremiyoruz 
   _handleOnChange = event => {
-    
+
     this.setState({ currentValue: event.target.value }, () => {
       console.log('this.state.currentValue 1', this.state.currentValue);
       //asenkron çalışıyor
@@ -126,13 +128,19 @@ class App extends React.Component {
       return 'merve'
     };
 }*/
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
   return {
     //hangi state i hangi propsaa bağlıyacağız onu söylüyor
-    todoList:state.todos.todos,
+    todoList: state.todos.todos,
   }
 
 }
 //comp app olduğu için onu yazıyoruz
 export default connect(mapStateToProps)(App);
 //connect yazdığımızda dispatch çaşılıyor,dispatch default olarak gönderiliyor
+//dispatch pushluyor 
+
+
+//action ve store mantıksaldır
+
+//store görünürde yok
