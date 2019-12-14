@@ -1,6 +1,6 @@
-# my-reactexp
+# my-reactexample
 
-Easy react exp :)
+Easy react example :)
 
 This project was bootstrapped with Create React App.
 
